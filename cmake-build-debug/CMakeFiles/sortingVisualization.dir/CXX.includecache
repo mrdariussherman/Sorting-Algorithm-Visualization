@@ -1,0 +1,32 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/Users/Darius/Desktop/CSI 3334/Projects/sortingVisualization/SDL_Plotter.h
+SDL2/SDL.h
+-
+SDL2_mixer/SDL_mixer.h
+-
+SDL2/SDL_thread.h
+-
+string.h
+-
+iostream
+-
+string
+-
+string.h
+-
+map
+-
+
+/Users/Darius/Desktop/CSI 3334/Projects/sortingVisualization/main.cpp
+SDL_Plotter.h
+/Users/Darius/Desktop/CSI 3334/Projects/sortingVisualization/SDL_Plotter.h
+cstdlib
+-
+
