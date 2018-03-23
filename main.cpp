@@ -1,5 +1,6 @@
 #include "SDL_Plotter.h"
 #include <cstdlib>
+#include <algorithm>
 
 using namespace std;
 
@@ -79,7 +80,7 @@ void MergeSort(int left, int right);
 
 
 int main(int argc, char **argv) {
-    g = new SDL_Plotter(1000,1000);
+    g = new SDL_Plotter(500,500);
     data = new int[g->getCol()];
 
 
@@ -120,7 +121,7 @@ int main(int argc, char **argv) {
 
 
 
-// Bubble Sort
+
 void BubbleSort(){
     for(int i = 0; i < g->getCol()-1; i++){
         for(int j = 0; j < g->getCol()-1-i; j++){
@@ -132,7 +133,6 @@ void BubbleSort(){
     }
 }
 
-// Selection Sort
 void SelectionSort(){
     int least;
     for ( int i = 0; i < g->getCol() - 1; i++ ){
@@ -149,15 +149,29 @@ void SelectionSort(){
 }
 
 void InsertionSort(){
+    for (int i = 1; i < g->getCol(); i++)
+    {
+        int current = data[i];
+        int position = i - 1;
 
+        while (position >= 0 and data[position] > current){
+            data[position + 1] = data[position];
+            position -= 1;
+        }
+        data[position + 1] = current;
+
+        plotData();
+    }
 }
 
-void HeapSort()
-{
-
+void HeapSort() {
+    for ( int i = 0; i < g->getCol() - 1; i++ ){
+        make_heap( data, data + (g->getCol() - 1 - i)) ;
+        swap( data[0], data[(g->getCol() - 1) - i] );
+        plotData();
+    }
 
 }
-
 
 int partition( int left, int right ){
     int pivotValue = data[left];
@@ -175,7 +189,6 @@ int partition( int left, int right ){
     return pivotPosition;
 }
 
-
 void QuickSort( int left, int right ){
     if ( left < right ){
         int p = partition( left, right );
@@ -187,13 +200,63 @@ void QuickSort( int left, int right ){
     }
 }
 
+// SHE DONT WORK
+void Merge( int left, int right, int part ){
+    int sizeL = part - left + 1;
+    int sizeR = right - part;
+    int leftArr[sizeL];
+    int rightArr[sizeR];
 
-void MergeSort(int left, int right)
-{
+    for ( int i = 0; i < sizeL; i++ ){
+        leftArr[i] = data[i];
+    }
+
+    for ( int i = 0; i < sizeR; i++ ){
+        rightArr[i] = data[part + 1 + i];
+    }
+
+    int leftPos = 0;
+    int rightPos = 0;
+    int mainPos = 0;
+
+    while ( leftPos < sizeL and rightPos < sizeR ){
+        if ( leftArr[leftPos] <= rightArr[rightPos] ){
+            data[mainPos] = leftArr[leftPos];
+            leftPos++;
+        }
+        else{
+            data[mainPos] = rightArr[rightPos];
+            rightPos++;
+        }
+        mainPos++;
+    }
+
+    while ( leftPos < sizeL ){
+        data[mainPos] = leftArr[leftPos];
+        leftPos++;
+        mainPos++;
+    }
+
+    while ( rightPos < sizeR ){
+        data[mainPos] = rightArr[rightPos];
+        rightPos++;
+        mainPos++;
+    }
+
+}
+// SHE DOESNT WORK
+void MergeSort(int left, int right){
+    if (left < right) {
+        int part = left + (right - left) / 2;
+
+        MergeSort(left, part);
+        MergeSort(part + 1, right);
+
+        Merge(left, right, part);
+    }
 
 }
 
-// Select Random Data
 void RandomizeData(){
     g->clear();
     for(int i =0; i < g->getCol(); i++){
@@ -201,8 +264,6 @@ void RandomizeData(){
     }
     plotData();
 }
-
-
 
 // main draw function, gets called over and over, as fast as possible
 void plotData(){
