@@ -1,6 +1,4 @@
 #include "SDL_Plotter.h"
-#include <cstdlib>
-#include <algorithm>
 
 using namespace std;
 
@@ -256,6 +254,8 @@ void MergeSort(int left, int right){
     }
 
 }
+
+
 
 void RandomizeData(){
     g->clear();
